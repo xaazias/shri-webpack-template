@@ -6,7 +6,8 @@
     "target": "ES5",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "jsx": "react"
+    "jsx": "react",
+    "downlevelIteration": true
   },
   "include": [
     "src",

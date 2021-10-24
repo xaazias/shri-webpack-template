@@ -14,23 +14,43 @@ const config: webpack.Configuration = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
+        clean: true,
     },
     plugins: [
-        new HtmlWebpackPlugin(),
         new ModuleLogger(),
         new StatoscopePlugin({
             saveStatsTo: 'stats.json',
             saveOnlyStats: false,
             open: false,
         }),
+        new HtmlWebpackPlugin({
+            template: 'src/index.html',
+        }),
     ],
     resolve: {
+        extensions: ['.ts', '.tsx', '.js'],
         fallback: {
-            "buffer": require.resolve("buffer"),
-            "stream": false,
+            buffer: require.resolve('buffer'),
+            stream: false,
+        },
+        alias: {
+            'crypto-browserify': path.resolve(__dirname, './src/utils/cryptoAlias'),
         },
     },
     module: {
+        rules: [
+            {
+                test: /\.(ts|tsx)$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+                include: path.resolve(__dirname, 'src'),
+            },
+        ],
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
     },
 };
 
